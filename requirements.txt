@@ -1,0 +1,14 @@
+boto3
+python-dotenv
+psycopg2-binary
+SQLAlchemy
+pandas
+Faker
+requests
+google-generativeai
+streamlit
+plotly
+pytest
+pyarrow
+pydantic
+pydantic-settings
