@@ -1,5 +1,8 @@
 from datetime import datetime
+from pathlib import Path
 from pprint import pformat
+import subprocess
+import sys
 
 from airflow import DAG
 from airflow.operators.empty import EmptyOperator
@@ -57,6 +60,61 @@ def standard_processing(**context):
     print("SAFE path: running standard ETL processing.")
 
 
+
+def generate_nested_json_file(**context):
+    m = context["ti"].xcom_pull(task_ids="get_today_source_metrics")
+    output_root = "/opt/airflow/scripts/generated_data"
+
+    cmd = [
+        sys.executable,
+        "/opt/airflow/scripts/generate_nested_json_events.py",
+        "--run-date", m["run_date"],
+        "--event-type", m["event_type"],
+        "--records", "50",
+        "--output-root", output_root,
+    ]
+
+    print("Running nested JSON generator:")
+    print(" ".join(cmd))
+
+    completed = subprocess.run(cmd, text=True, capture_output=True, check=True)
+    print(completed.stdout)
+    if completed.stderr:
+        print(completed.stderr)
+
+    input_file = str(
+        Path(output_root)
+        / "raw"
+        / "nike"
+        / "events"
+        / f"dt={m['run_date']}"
+        / f"nike_events_{m['run_date']}_{m['event_type'].lower()}.jsonl"
+    )
+
+    print(f"Generated file: {input_file}")
+    return input_file
+
+
+def flatten_nested_json_file(**context):
+    input_file = context["ti"].xcom_pull(task_ids="generate_nested_json_file")
+
+    cmd = [
+        sys.executable,
+        "/opt/airflow/src/spark/flatten_nested_json.py",
+        "--input-file", input_file,
+    ]
+
+    print("Running nested JSON flattening:")
+    print(" ".join(cmd))
+
+    completed = subprocess.run(cmd, text=True, capture_output=True, check=True)
+    print(completed.stdout)
+    if completed.stderr:
+        print(completed.stderr)
+
+    return {"input_file": input_file, "status": "PROCESSED"}
+
+
 def process_data_simulation(**context):
     result = context["ti"].xcom_pull(task_ids="ai_sla_predictor")
     if result["prediction"] == "BREACH":
@@ -70,9 +128,9 @@ def process_data_simulation(**context):
 
 def log_runtime_summary(**context):
     pred = context["ti"].xcom_pull(task_ids="ai_sla_predictor")
-    final = context["ti"].xcom_pull(task_ids="process_data_simulation")
+    flatten_result = context["ti"].xcom_pull(task_ids="flatten_nested_json_file")
     print("FINAL SUMMARY")
-    print(pformat({"prediction": pred, "processing_result": final}))
+    print(pformat({"prediction": pred, "flatten_result": flatten_result}))
 
 
 with DAG(
@@ -91,11 +149,12 @@ with DAG(
     scale = PythonOperator(task_id="simulate_cluster_scale_up", python_callable=simulate_cluster_scale_up)
     standard = PythonOperator(task_id="standard_processing", python_callable=standard_processing)
     join = EmptyOperator(task_id="join_processing_paths", trigger_rule=TriggerRule.NONE_FAILED_MIN_ONE_SUCCESS)
-    process = PythonOperator(task_id="process_data_simulation", python_callable=process_data_simulation)
+    generate_json = PythonOperator(task_id="generate_nested_json_file", python_callable=generate_nested_json_file)
+    flatten_json = PythonOperator(task_id="flatten_nested_json_file", python_callable=flatten_nested_json_file)
     log_summary = PythonOperator(task_id="log_runtime_summary", python_callable=log_runtime_summary)
     finish = EmptyOperator(task_id="finish")
 
     start >> get_metrics >> predictor >> branch
     branch >> standard >> join
     branch >> alert >> scale >> join
-    join >> process >> log_summary >> finish
+    join >> generate_json >> flatten_json >> log_summary >> finish
