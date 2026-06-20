@@ -10,6 +10,7 @@ from airflow.operators.python import BranchPythonOperator, PythonOperator
 from airflow.utils.trigger_rule import TriggerRule
 
 from src.ai.sla_predictor import predict_sla
+from src.alerts.telegram import send_telegram_alert
 
 
 def get_today_source_metrics(**context):
@@ -46,9 +47,16 @@ def branch_on_prediction(**context):
 
 def send_breach_alert(**context):
     result = context["ti"].xcom_pull(task_ids="ai_sla_predictor")
-    print("CRITICAL: Nike ETL may breach SLA")
-    print(pformat(result))
-    print("Telegram alert integration will be added later.")
+    message = (
+        "🚨 Nike DataOps SLA Alert\\n"
+        f"Prediction: {result['prediction']}\\n"
+        f"Confidence: {result['confidence']}%\\n"
+        f"Predicted Runtime: {result['predicted_runtime_min']} min\\n"
+        f"Action: {result['remediation_action']}\\n"
+        f"Reason: {result['reason']}"
+    )
+    print(message)
+    return send_telegram_alert(message)
 
 
 def simulate_cluster_scale_up(**context):
