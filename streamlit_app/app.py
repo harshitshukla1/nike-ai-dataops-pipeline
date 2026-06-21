@@ -25,6 +25,162 @@ def load_local_env():
 load_local_env()
 
 st.set_page_config(page_title="Nike AI DataOps", page_icon="⚡", layout="wide")
+
+
+st.markdown("""
+<style>
+/* Cinematic animated starfield */
+.stApp::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    background-image:
+      radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.9), transparent),
+      radial-gradient(1px 1px at 90px 80px, rgba(125,211,252,.85), transparent),
+      radial-gradient(1.5px 1.5px at 140px 150px, rgba(216,180,254,.85), transparent),
+      radial-gradient(1px 1px at 220px 60px, rgba(255,255,255,.7), transparent);
+    background-size: 260px 220px;
+    animation: starDrift 28s linear infinite;
+    opacity: .45;
+}
+
+.stApp::after {
+    content: "";
+    position: fixed;
+    inset: -20%;
+    z-index: -2;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(14,165,233,.22), transparent 24%),
+      radial-gradient(circle at 80% 10%, rgba(168,85,247,.20), transparent 24%),
+      radial-gradient(circle at 50% 85%, rgba(34,197,94,.13), transparent 24%);
+    filter: blur(35px);
+    animation: oilFloat 16s ease-in-out infinite alternate;
+}
+
+@keyframes starDrift {
+    from { transform: translate3d(0,0,0); }
+    to { transform: translate3d(-260px,220px,0); }
+}
+
+@keyframes oilFloat {
+    0% { transform: translate(-2%, -1%) scale(1); }
+    50% { transform: translate(3%, 2%) scale(1.05); }
+    100% { transform: translate(-1%, 4%) scale(1.02); }
+}
+
+@keyframes floatCard {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes glowPulse {
+    0% { box-shadow: 0 0 25px rgba(56,189,248,.18); }
+    50% { box-shadow: 0 0 55px rgba(168,85,247,.28); }
+    100% { box-shadow: 0 0 25px rgba(56,189,248,.18); }
+}
+
+.hero, .glass, .feature-card, div[data-testid="stMetric"] {
+    animation: floatCard 7s ease-in-out infinite;
+}
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    animation: floatCard 8s ease-in-out infinite, glowPulse 5s ease-in-out infinite;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: -80px;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.18), transparent 20%),
+      linear-gradient(120deg, transparent, rgba(255,255,255,.10), transparent);
+    animation: shimmerMove 8s linear infinite;
+}
+
+@keyframes shimmerMove {
+    0% { transform: translateX(-30%) rotate(0deg); }
+    100% { transform: translateX(30%) rotate(8deg); }
+}
+
+/* Splash loading overlay */
+.loader-screen {
+    position: fixed;
+    z-index: 999999;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(56,189,248,.28), transparent 28%),
+      radial-gradient(circle at 80% 30%, rgba(168,85,247,.25), transparent 30%),
+      linear-gradient(135deg, #020617, #0f172a, #020617);
+    animation: splashFade 2.6s ease forwards;
+    pointer-events: none;
+}
+
+.loader-box {
+    padding: 34px 46px;
+    border-radius: 30px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.22);
+    backdrop-filter: blur(22px);
+    text-align: center;
+    color: white;
+    box-shadow: 0 20px 80px rgba(56,189,248,.20);
+}
+
+.loader-ring {
+    width: 74px;
+    height: 74px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    border: 4px solid rgba(255,255,255,.18);
+    border-top-color: #38bdf8;
+    border-right-color: #a855f7;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@keyframes splashFade {
+    0% { opacity: 1; visibility: visible; }
+    70% { opacity: 1; visibility: visible; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+.neon-title {
+    font-size: 56px;
+    line-height: 1.05;
+    font-weight: 900;
+    background: linear-gradient(90deg, #38bdf8, #a855f7, #22c55e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.arch-node {
+    padding: 16px 18px;
+    margin: 8px;
+    border-radius: 18px;
+    display: inline-block;
+    background: rgba(15,23,42,.75);
+    border: 1px solid rgba(56,189,248,.25);
+    box-shadow: 0 12px 35px rgba(0,0,0,.25);
+}
+</style>
+
+<div class="loader-screen">
+  <div class="loader-box">
+    <div class="loader-ring"></div>
+    <h2>Booting Nike AI DataOps</h2>
+    <p>Loading AI SLA Engine • Neon Warehouse • FinOps Console</p>
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
 AUTO_REFRESH_SECONDS = 30
 
 st.markdown("""
@@ -162,7 +318,7 @@ if page == "Command Center":
     <meta http-equiv="refresh" content="30">
     <div class="hero">
       <div class="small-muted">Designed by Harshit Shukla • AI Data Engineering Portfolio</div>
-      <h1>⚡ Nike AI DataOps Command Center</h1>
+      <div class="neon-title">⚡ Nike AI DataOps</div><h2>Command Center</h2>
       <p style="font-size:18px;line-height:1.7;">
         A futuristic AI-powered DataOps platform for Nike-scale omnichannel fulfillment pipelines.
         It predicts SLA breaches, triggers Telegram alerts, processes nested JSON events, tracks FinOps,
@@ -289,6 +445,14 @@ elif page == "Project Blueprint":
     </p>
 
     <h2>4. Architecture</h2>
+        <div>
+          <span class="arch-node">Random Nike Events</span>
+          <span class="arch-node">Groq AI Predictor</span>
+          <span class="arch-node">Telegram Alert</span>
+          <span class="arch-node">Nested JSON</span>
+          <span class="arch-node">Neon PostgreSQL</span>
+          <span class="arch-node">English-to-SQL</span>
+        </div>
     <pre>
     Random Nike Event Simulation
           |
