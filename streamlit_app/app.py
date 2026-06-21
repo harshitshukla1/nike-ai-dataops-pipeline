@@ -29,34 +29,62 @@ st.set_page_config(page_title="Nike AI DataOps", page_icon="⚡", layout="wide")
 st.markdown("""
 <style>
 .stApp {
-    background: radial-gradient(circle at top left, #1b1f3b 0%, #050816 35%, #02030a 100%);
-    color: white;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(56,189,248,.18), transparent 25%),
+      radial-gradient(circle at 90% 0%, rgba(168,85,247,.20), transparent 28%),
+      linear-gradient(135deg, #020617 0%, #070b1f 50%, #020617 100%);
+    color: #e5e7eb;
 }
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, rgba(15,23,42,.95), rgba(2,6,23,.95));
+    background: linear-gradient(180deg, rgba(2,6,23,.98), rgba(15,23,42,.94));
+    border-right: 1px solid rgba(148,163,184,.18);
 }
+.block-container { padding-top: 2rem; }
 .glass {
-    padding: 22px;
-    border-radius: 24px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.18);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
-    backdrop-filter: blur(18px);
+    padding: 24px;
+    border-radius: 26px;
+    background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+    border: 1px solid rgba(255,255,255,.20);
+    box-shadow: 0 18px 55px rgba(0,0,0,.42);
+    backdrop-filter: blur(20px);
 }
 .hero {
-    padding: 30px;
-    border-radius: 30px;
-    background: linear-gradient(135deg, rgba(56,189,248,.25), rgba(168,85,247,.20), rgba(34,197,94,.15));
-    border: 1px solid rgba(255,255,255,.22);
-    box-shadow: 0 20px 60px rgba(56,189,248,.15);
+    padding: 34px;
+    border-radius: 34px;
+    background:
+      linear-gradient(135deg, rgba(56,189,248,.25), rgba(168,85,247,.20), rgba(34,197,94,.14));
+    border: 1px solid rgba(255,255,255,.24);
+    box-shadow: 0 22px 70px rgba(56,189,248,.18);
 }
-.metric-card {
+.badge {
+    display:inline-block;
+    padding:8px 14px;
+    margin:4px 6px 4px 0;
+    border-radius:999px;
+    background:rgba(34,197,94,.14);
+    border:1px solid rgba(34,197,94,.35);
+    color:#bbf7d0;
+    font-weight:700;
+}
+.badge-blue {
+    background:rgba(56,189,248,.14);
+    border:1px solid rgba(56,189,248,.35);
+    color:#bae6fd;
+}
+.badge-purple {
+    background:rgba(168,85,247,.14);
+    border:1px solid rgba(168,85,247,.35);
+    color:#e9d5ff;
+}
+div[data-testid="stMetric"] {
+    background: rgba(15,23,42,.72);
+    border: 1px solid rgba(148,163,184,.25);
     padding: 18px;
     border-radius: 20px;
-    background: rgba(15,23,42,.78);
-    border: 1px solid rgba(148,163,184,.28);
+    box-shadow: 0 12px 30px rgba(0,0,0,.25);
 }
 h1, h2, h3 { color: #f8fafc !important; }
+a { color:#38bdf8 !important; }
 </style>
 """, unsafe_allow_html=True)
 
