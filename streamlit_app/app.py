@@ -181,7 +181,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-AUTO_REFRESH_SECONDS = 30
+
 
 st.markdown("""
 <style>
@@ -315,7 +315,7 @@ AI/Data Engineering Portfolio<br/><br/>
 
 if page == "Command Center":
     st.markdown("""
-    <meta http-equiv="refresh" content="30">
+    
     <div class="hero">
       <div class="small-muted">Designed by Harshit Shukla • AI Data Engineering Portfolio</div>
       <div class="neon-title">⚡ Nike AI DataOps</div><h2>Command Center</h2>
