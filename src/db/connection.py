@@ -3,6 +3,10 @@ import psycopg2
 
 
 def get_db_connection():
+    database_url = os.getenv("DATABASE_URL")
+    if database_url and database_url.startswith("postgresql://"):
+        return psycopg2.connect(database_url)
+
     return psycopg2.connect(
         host=os.getenv("DB_HOST", os.getenv("POSTGRES_HOST", "postgres")),
         port=int(os.getenv("DB_PORT", os.getenv("POSTGRES_PORT", "5432"))),
