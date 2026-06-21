@@ -25,6 +25,7 @@ def load_local_env():
 load_local_env()
 
 st.set_page_config(page_title="Nike AI DataOps", page_icon="⚡", layout="wide")
+AUTO_REFRESH_SECONDS = 30
 
 st.markdown("""
 <style>
@@ -85,7 +86,30 @@ div[data-testid="stMetric"] {
 }
 h1, h2, h3 { color: #f8fafc !important; }
 a { color:#38bdf8 !important; }
+
+.floating-grid {
+    display:grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap:18px;
+    margin-top:18px;
+}
+.feature-card {
+    padding:20px;
+    border-radius:22px;
+    background:rgba(15,23,42,.68);
+    border:1px solid rgba(148,163,184,.22);
+    box-shadow:0 12px 35px rgba(0,0,0,.28);
+}
+.small-muted { color:#94a3b8; font-size:14px; }
+.footer {
+    margin-top:35px;
+    padding:20px;
+    text-align:center;
+    color:#94a3b8;
+    border-top:1px solid rgba(148,163,184,.2);
+}
 </style>
+
 """, unsafe_allow_html=True)
 
 def query_df(sql):
@@ -135,9 +159,36 @@ AI/Data Engineering Portfolio<br/><br/>
 
 if page == "Command Center":
     st.markdown("""
+    <meta http-equiv="refresh" content="30">
     <div class="hero">
+      <div class="small-muted">Designed by Harshit Shukla • AI Data Engineering Portfolio</div>
       <h1>⚡ Nike AI DataOps Command Center</h1>
-      <p>AI-powered SLA prediction, nested JSON processing, Telegram alerting, English-to-SQL and FinOps monitoring.</p>
+      <p style="font-size:18px;line-height:1.7;">
+        A futuristic AI-powered DataOps platform for Nike-scale omnichannel fulfillment pipelines.
+        It predicts SLA breaches, triggers Telegram alerts, processes nested JSON events, tracks FinOps,
+        and lets users query data using natural language.
+      </p>
+      <span class="badge">Live Hosted Demo</span>
+      <span class="badge-blue">Groq AI</span>
+      <span class="badge-purple">Neon PostgreSQL</span>
+      <span class="badge">Telegram Alerts</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="floating-grid">
+      <div class="feature-card">
+        <h3>Problem</h3>
+        <p>Nike SNKRS drops, promo campaigns and bot traffic can suddenly increase data volume, causing the morning inventory ETL to breach SLA.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Solution</h3>
+        <p>AI predicts whether the pipeline is SAFE or BREACH before heavy processing starts and recommends scaling when needed.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Business Value</h3>
+        <p>Supply-chain teams get early warnings, fewer dashboard delays, better dispatch planning and transparent DataOps visibility.</p>
+      </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -198,40 +249,101 @@ elif page == "FinOps":
     """), use_container_width=True)
 
 elif page == "Project Blueprint":
-    st.title("🏗️ Project Blueprint")
     st.markdown("""
-    <div class="glass">
-    <h2>Problem Statement</h2>
-    <p>Nike-scale omnichannel pipelines can breach morning SLA during SNKRS drops, promotions, bot traffic spikes and seasonal campaigns.</p>
-    <h2>Solution</h2>
-    <p>An AI DataOps platform that predicts SLA risk, alerts via Telegram, simulates remediation, processes nested JSON, stores clean data in PostgreSQL and exposes a futuristic Streamlit command center.</p>
-    <h2>Architecture</h2>
-    <pre>
-    Random Nike Scenario
-        -> AI SLA Prediction (Groq)
-        -> SAFE/BREACH Branch
-        -> Telegram Alert on BREACH
-        -> Nested JSON Generation
-        -> JSON Flattening
-        -> PostgreSQL Warehouse
-        -> Streamlit Dashboard + English-to-SQL
-    </pre>
-    <h2>AI Implementation Levels</h2>
-    <ul>
-      <li>Groq AI SLA prediction</li>
-      <li>Rule-based production fallback</li>
-      <li>AI English-to-SQL query generation</li>
-      <li>Gemini fallback-ready design</li>
-    </ul>
-    <h2>Engineering Features</h2>
-    <ul>
-      <li>Airflow orchestration</li>
-      <li>PostgreSQL warehouse</li>
-      <li>Nested JSON flattening</li>
-      <li>Telegram alerting</li>
-      <li>FinOps tracking</li>
-      <li>Hosted Streamlit UI ready</li>
-      <li>CI/CD ready</li>
-    </ul>
+    <div class="hero">
+      <div class="small-muted">Designed by Harshit Shukla</div>
+      <h1>🏗️ Project Blueprint</h1>
+      <p style="font-size:18px;line-height:1.7;">
+        Complete engineering story of the Nike AI DataOps platform: problem, architecture,
+        workflow, AI layers, DataOps decisions and business impact.
+      </p>
     </div>
     """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="glass">
+    <h2>1. Problem Statement</h2>
+    <p>
+    Nike-style omnichannel commerce pipelines process SNKRS app drops, Nike.com orders,
+    retail sync data, bot traffic, inventory movement and fulfillment signals.
+    On normal days the ETL pipeline finishes within SLA, but during limited sneaker drops,
+    promo campaigns or high bot traffic, data volume spikes and the morning inventory dashboard
+    can be delayed.
+    </p>
+
+    <h2>2. Business SLA</h2>
+    <ul>
+      <li>Pipeline: <b>nike_omni_inventory_etl</b></li>
+      <li>Start time: <b>3:00 AM</b></li>
+      <li>Deadline: <b>7:00 AM</b></li>
+      <li>SLA limit: <b>240 minutes</b></li>
+      <li>Impact of breach: delayed dashboard, dispatch delays, supply-chain planning risk.</li>
+    </ul>
+
+    <h2>3. What This Project Solves</h2>
+    <p>
+    The system predicts SLA risk before heavy processing starts. If the run is risky,
+    it sends a Telegram alert and recommends scale-up. It also processes nested JSON
+    order events, loads clean relational tables, tracks FinOps metrics and exposes
+    everything in a hosted Streamlit command center.
+    </p>
+
+    <h2>4. Architecture</h2>
+    <pre>
+    Random Nike Event Simulation
+          |
+          v
+    Groq AI SLA Predictor
+          |
+          |--- SAFE   -> standard processing
+          |--- BREACH -> Telegram alert + scale-up recommendation
+          |
+          v
+    Nested JSON Order Events
+          |
+          v
+    Flattening Layer
+          |
+          v
+    Neon PostgreSQL Warehouse
+          |
+          v
+    Streamlit Command Center + English-to-SQL
+    </pre>
+
+    <h2>5. AI Implementation Levels</h2>
+    <ol>
+      <li><b>SLA Prediction AI:</b> Groq predicts SAFE/BREACH, runtime, confidence, reason and remediation.</li>
+      <li><b>English-to-SQL AI:</b> Users ask questions in English and Groq generates safe PostgreSQL SELECT queries.</li>
+      <li><b>Fallback Intelligence:</b> If AI fails, rule-based prediction keeps the system reliable.</li>
+      <li><b>Alert Intelligence:</b> Telegram alert triggers only for predicted breach scenarios.</li>
+    </ol>
+
+    <h2>6. Data Engineering Features</h2>
+    <ul>
+      <li>Airflow orchestration for enterprise workflow design.</li>
+      <li>Nested JSON generation and flattening.</li>
+      <li>PostgreSQL warehouse tables for orders, order items, predictions, file logs and FinOps.</li>
+      <li>Hosted Neon PostgreSQL for public Streamlit access.</li>
+      <li>CI/CD validation with GitHub Actions.</li>
+    </ul>
+
+    <h2>7. FinOps and Cloud Health</h2>
+    <p>
+    The project tracks processed files, cleanup status, request-like operations and estimated
+    storage savings. This demonstrates cost-aware engineering and free-tier friendly design.
+    </p>
+
+    <h2>8. Engineer</h2>
+    <p>
+      <b>Designed and built by Harshit Shukla</b><br/>
+      GitHub: <a href="https://github.com/harshitshukla1" target="_blank">github.com/harshitshukla1</a>
+    </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+st.markdown("""
+<div class="footer">
+Designed by Harshit Shukla • Nike AI DataOps Command Center • Built with Airflow, Groq, Neon, Telegram and Streamlit
+</div>
+""", unsafe_allow_html=True)
