@@ -73,3 +73,60 @@ Nested JSON Generator -> AWS S3 Raw Zone -> Apache Airflow DAG -> PySpark Flatte
 - [ ] Auto-healing
 - [ ] Streamlit dashboard
 - [ ] CI/CD
+
+
+---
+
+## Live Hosted Demo
+
+Public Streamlit App:
+
+https://nike-ai-dataops-pipeline-npwpriqyrpwuagkdfqum6q.streamlit.app/
+
+## Final Project Capabilities
+
+- Groq-powered AI SLA prediction
+- Real-time random Nike event simulation
+- SAFE/BREACH prediction paths
+- Telegram alerting for breach scenarios
+- Nested JSON event generation
+- Nested JSON flattening into PostgreSQL warehouse
+- Neon PostgreSQL hosted cloud database
+- AI English-to-SQL query assistant
+- FinOps cleanup and storage-saving simulation
+- Futuristic Streamlit command center
+- Project Blueprint documentation page
+- GitHub Actions CI validation
+
+## AI Implementation Layers
+
+1. SLA Prediction AI: Groq classifies pipeline risk as SAFE or BREACH and returns runtime, confidence, reason, and remediation.
+2. English-to-SQL AI: Groq converts natural language questions into safe PostgreSQL SELECT queries.
+3. Fallback Intelligence: rule-based fallback keeps the app working if AI API fails.
+4. Alert Intelligence: Telegram alert triggers only for predicted breach scenarios.
+
+## Final Hosted Architecture
+
+```text
+User opens hosted Streamlit UI
+        |
+        v
+Run random Nike simulation
+        |
+        v
+Groq AI SLA Predictor
+        |
+        |--- SAFE   -> normal processing status
+        |--- BREACH -> Telegram alert + scale-up recommendation
+        |
+        v
+Neon PostgreSQL Cloud Warehouse
+        |
+        v
+Futuristic dashboard + English-to-SQL + FinOps monitor
+```
+
+## Engineer
+
+Built by Harshit Shukla  
+GitHub: https://github.com/harshitshukla1
