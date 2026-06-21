@@ -669,15 +669,15 @@ if page == "Command Center":
     """, unsafe_allow_html=True)
 
 
-st.markdown("""
-<div class="glass" style="margin-top:18px;">
-  <span class="badge-blue">Hosted on Streamlit Cloud</span>
-  <span class="badge-purple">Neon PostgreSQL Warehouse</span>
-  <span class="badge">Groq AI Predictor</span>
-  <span class="badge-blue">Telegram Live Alerts</span>
-  <span class="badge-purple">English-to-SQL</span>
-</div>
-""", unsafe_allow_html=True)
+    st.markdown("""
+    <div class="glass" style="margin-top:18px;">
+      <span class="badge-blue">Hosted on Streamlit Cloud</span>
+      <span class="badge-purple">Neon PostgreSQL Warehouse</span>
+      <span class="badge">Groq AI Predictor</span>
+      <span class="badge-blue">Telegram Live Alerts</span>
+      <span class="badge-purple">English-to-SQL</span>
+    </div>
+    """, unsafe_allow_html=True)
 
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Orders", get_count("warehouse.orders"))
