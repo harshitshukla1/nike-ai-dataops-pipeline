@@ -58,3 +58,15 @@ FROM warehouse.etl_execution_history
 GROUP BY event_type, sla_status
 ORDER BY event_type, sla_status;
 """), use_container_width=True)
+
+st.subheader("AI English-to-SQL Query Assistant")
+question = st.text_input("Ask your data in English", value="show top 5 orders by order total amount")
+
+if st.button("Generate & Run SQL"):
+    try:
+        from src.ai.text_to_sql import english_to_sql
+        sql = english_to_sql(question)
+        st.code(sql, language="sql")
+        st.dataframe(query_df(sql), use_container_width=True)
+    except Exception as e:
+        st.error(str(e))
