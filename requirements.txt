@@ -12,3 +12,4 @@ pytest
 pyarrow
 pydantic
 pydantic-settings
+groq
