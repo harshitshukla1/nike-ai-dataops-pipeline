@@ -26,6 +26,273 @@ load_local_env()
 
 st.set_page_config(page_title="Nike AI DataOps", page_icon="⚡", layout="wide")
 
+# ---------- FINAL FUTURISTIC UI FX ----------
+st.markdown("""
+<style>
+/* Hide default Streamlit branding */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
+/* Global cinematic cyber background */
+.stApp {
+    background:
+      radial-gradient(circle at 15% 15%, rgba(0, 229, 255, 0.18), transparent 28%),
+      radial-gradient(circle at 85% 10%, rgba(168, 85, 247, 0.22), transparent 30%),
+      radial-gradient(circle at 50% 95%, rgba(34, 197, 94, 0.12), transparent 28%),
+      linear-gradient(135deg, #020617 0%, #050816 40%, #020617 100%) !important;
+    color: #e5e7eb !important;
+}
+
+/* Moving star field */
+.stApp::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -5;
+    background-image:
+      radial-gradient(1px 1px at 20px 30px, #ffffff, transparent),
+      radial-gradient(1px 1px at 120px 80px, #38bdf8, transparent),
+      radial-gradient(2px 2px at 180px 160px, #a855f7, transparent),
+      radial-gradient(1px 1px at 260px 200px, #22c55e, transparent);
+    background-size: 300px 260px;
+    animation: starsMove 35s linear infinite;
+    opacity: 0.45;
+}
+@keyframes starsMove {
+    from { transform: translate(0,0); }
+    to { transform: translate(-300px,260px); }
+}
+
+/* Liquid neon layer */
+.stApp::after {
+    content: "";
+    position: fixed;
+    inset: -25%;
+    z-index: -4;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(56,189,248,.22), transparent 26%),
+      radial-gradient(circle at 80% 20%, rgba(168,85,247,.22), transparent 26%),
+      radial-gradient(circle at 50% 80%, rgba(34,197,94,.15), transparent 26%);
+    filter: blur(42px);
+    animation: liquidMove 18s ease-in-out infinite alternate;
+}
+@keyframes liquidMove {
+    0% { transform: translate(-2%, -2%) scale(1); }
+    50% { transform: translate(3%, 2%) scale(1.05); }
+    100% { transform: translate(-1%, 4%) scale(1.02); }
+}
+
+/* Sidebar premium */
+[data-testid="stSidebar"] {
+    background:
+      linear-gradient(180deg, rgba(2,6,23,.98), rgba(15,23,42,.96)) !important;
+    border-right: 1px solid rgba(56,189,248,.25);
+    box-shadow: 12px 0 40px rgba(0,0,0,.35);
+}
+[data-testid="stSidebar"] * {
+    color: #e5e7eb !important;
+}
+
+/* Main container */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: #f8fafc !important;
+    letter-spacing: -0.03em;
+}
+
+/* Neon title */
+.neon-title {
+    font-size: clamp(42px, 5vw, 72px);
+    line-height: 1.02;
+    font-weight: 950;
+    background: linear-gradient(90deg, #38bdf8, #a855f7, #22c55e, #38bdf8);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: neonFlow 5s linear infinite;
+}
+@keyframes neonFlow {
+    to { background-position: 300% center; }
+}
+
+/* Hero card */
+.hero {
+    position: relative;
+    overflow: hidden;
+    padding: 38px !important;
+    border-radius: 34px !important;
+    background:
+      linear-gradient(135deg, rgba(15,23,42,.70), rgba(30,41,59,.45)),
+      radial-gradient(circle at 10% 10%, rgba(56,189,248,.28), transparent 35%),
+      radial-gradient(circle at 90% 20%, rgba(168,85,247,.25), transparent 35%) !important;
+    border: 1px solid rgba(255,255,255,.22) !important;
+    box-shadow:
+      0 24px 80px rgba(0,0,0,.45),
+      0 0 80px rgba(56,189,248,.12);
+    backdrop-filter: blur(22px);
+    animation: cardFloat 7s ease-in-out infinite;
+}
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: -120px;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,.16), transparent);
+    transform: rotate(12deg);
+    animation: shimmer 6s linear infinite;
+}
+@keyframes shimmer {
+    from { transform: translateX(-40%) rotate(12deg); }
+    to { transform: translateX(40%) rotate(12deg); }
+}
+
+/* Glass cards */
+.glass, .feature-card, div[data-testid="stMetric"] {
+    background: linear-gradient(135deg, rgba(255,255,255,.11), rgba(255,255,255,.045)) !important;
+    border: 1px solid rgba(255,255,255,.20) !important;
+    border-radius: 26px !important;
+    box-shadow:
+      0 18px 55px rgba(0,0,0,.38),
+      inset 0 1px 0 rgba(255,255,255,.10);
+    backdrop-filter: blur(22px);
+    animation: cardFloat 8s ease-in-out infinite;
+}
+@keyframes cardFloat {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-7px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Metric cards */
+div[data-testid="stMetric"] {
+    padding: 20px;
+}
+div[data-testid="stMetricValue"] {
+    color: #38bdf8 !important;
+    font-size: 34px !important;
+    font-weight: 900 !important;
+}
+div[data-testid="stMetricLabel"] {
+    color: #cbd5e1 !important;
+    font-weight: 700 !important;
+}
+
+/* Buttons */
+.stButton > button {
+    border-radius: 999px !important;
+    border: 1px solid rgba(56,189,248,.45) !important;
+    background: linear-gradient(90deg, #0ea5e9, #8b5cf6, #22c55e) !important;
+    color: white !important;
+    font-weight: 900 !important;
+    padding: 0.75rem 1.35rem !important;
+    box-shadow: 0 14px 40px rgba(56,189,248,.22);
+    transition: all .25s ease;
+}
+.stButton > button:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(168,85,247,.32);
+}
+
+/* Badges */
+.badge, .badge-blue, .badge-purple {
+    display:inline-block;
+    padding:8px 15px;
+    margin:5px 7px 5px 0;
+    border-radius:999px;
+    font-weight:900;
+    letter-spacing:.02em;
+}
+.badge {
+    background:rgba(34,197,94,.15);
+    border:1px solid rgba(34,197,94,.42);
+    color:#bbf7d0;
+}
+.badge-blue {
+    background:rgba(56,189,248,.16);
+    border:1px solid rgba(56,189,248,.45);
+    color:#bae6fd;
+}
+.badge-purple {
+    background:rgba(168,85,247,.16);
+    border:1px solid rgba(168,85,247,.45);
+    color:#e9d5ff;
+}
+
+/* Dataframes */
+[data-testid="stDataFrame"] {
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(148,163,184,.22);
+    box-shadow: 0 16px 45px rgba(0,0,0,.25);
+}
+
+/* Loading overlay */
+.loader-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(56,189,248,.28), transparent 25%),
+      radial-gradient(circle at 80% 20%, rgba(168,85,247,.28), transparent 25%),
+      linear-gradient(135deg, #020617, #0f172a);
+    animation: splashFade 2.2s ease forwards;
+    pointer-events: none;
+}
+.loader-box {
+    padding: 38px 52px;
+    border-radius: 34px;
+    background: rgba(255,255,255,.09);
+    border: 1px solid rgba(255,255,255,.24);
+    backdrop-filter: blur(24px);
+    text-align: center;
+    color: white;
+    box-shadow: 0 22px 90px rgba(56,189,248,.22);
+}
+.loader-ring {
+    width: 78px;
+    height: 78px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    border: 5px solid rgba(255,255,255,.16);
+    border-top-color: #38bdf8;
+    border-right-color: #a855f7;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes splashFade {
+    0%, 70% { opacity: 1; visibility: visible; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+/* Footer */
+.footer {
+    margin-top: 40px;
+    padding: 22px;
+    text-align: center;
+    color: #94a3b8;
+    border-top: 1px solid rgba(148,163,184,.20);
+}
+</style>
+
+<div class="loader-screen">
+  <div class="loader-box">
+    <div class="loader-ring"></div>
+    <h2>Launching Nike AI DataOps</h2>
+    <p>Initializing AI Predictor • Neon Warehouse • FinOps Console</p>
+  </div>
+</div>
+""", unsafe_allow_html=True)
+# ---------- END FINAL FUTURISTIC UI FX ----------
+
+
 
 st.markdown("""
 <style>
@@ -401,6 +668,17 @@ if page == "Command Center":
     </div>
     """, unsafe_allow_html=True)
 
+
+st.markdown("""
+<div class="glass" style="margin-top:18px;">
+  <span class="badge-blue">Hosted on Streamlit Cloud</span>
+  <span class="badge-purple">Neon PostgreSQL Warehouse</span>
+  <span class="badge">Groq AI Predictor</span>
+  <span class="badge-blue">Telegram Live Alerts</span>
+  <span class="badge-purple">English-to-SQL</span>
+</div>
+""", unsafe_allow_html=True)
+
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Orders", get_count("warehouse.orders"))
     c2.metric("Items", get_count("warehouse.order_items"))
@@ -670,3 +948,9 @@ elif page == "Project Blueprint":
       </p>
     </div>
     """, unsafe_allow_html=True)
+
+st.markdown("""
+<div class="footer">
+  Nike AI DataOps Command Center • Designed by Harshit Shukla • Groq AI + Neon + Streamlit + Telegram
+</div>
+""", unsafe_allow_html=True)
