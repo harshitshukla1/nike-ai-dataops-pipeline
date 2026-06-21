@@ -26,7 +26,53 @@ def fetch_history_summary(event_type):
     }
 
 
+def groq_predict_sla(run_date, event_type, footwear_events, apparel_events, bot_traffic, cluster_nodes=4):
+    import os, json
+    api_key=os.getenv("GROQ_API_KEY")
+    model_name=os.getenv("GROQ_MODEL","llama-3.1-8b-instant")
+    if not api_key:
+        return None
+    try:
+        from groq import Groq
+        history=fetch_history_summary(event_type)
+        total_events=footwear_events+apparel_events
+        prompt=f"""
+Return ONLY JSON:
+{{"prediction":"SAFE or BREACH","confidence":80,"predicted_runtime_min":123,"reason":"short","suggested_cluster_nodes":4,"remediation_action":"NONE or SCALE_CLUSTER","model_name":"{model_name}"}}
+
+Nike SLA limit 240 min.
+Today: event_type={event_type}, footwear={footwear_events}, apparel={apparel_events}, total={total_events}, bot_traffic={bot_traffic}, cluster_nodes={cluster_nodes}
+History: {history}
+If runtime > 240 use BREACH and SCALE_CLUSTER with 10 nodes.
+"""
+        client=Groq(api_key=api_key)
+        resp=client.chat.completions.create(
+            model=model_name,
+            messages=[{"role":"system","content":"You output strict JSON only."},{"role":"user","content":prompt}],
+            temperature=0.1,
+        )
+        text=resp.choices[0].message.content.strip()
+        start=text.find("{"); end=text.rfind("}")
+        data=json.loads(text[start:end+1])
+        data["prediction"]=str(data["prediction"]).upper()
+        data["remediation_action"]=str(data["remediation_action"]).upper()
+        data["confidence"]=float(data.get("confidence",80))
+        data["confidence"]=int(data["confidence"]*100) if data["confidence"]<=1 else int(data["confidence"])
+        data["predicted_runtime_min"]=float(data["predicted_runtime_min"])
+        data["suggested_cluster_nodes"]=int(data["suggested_cluster_nodes"])
+        data["model_name"]=model_name
+        log_prediction(run_date,data)
+        return data
+    except Exception as exc:
+        print(f"Groq prediction failed, falling back: {exc}")
+        return None
+
+
 def predict_sla(run_date, event_type, footwear_events, apparel_events, bot_traffic, cluster_nodes=4):
+    groq_result = groq_predict_sla(run_date, event_type, footwear_events, apparel_events, bot_traffic, cluster_nodes)
+    if groq_result:
+        return groq_result
+
     history = fetch_history_summary(event_type)
     total_events = footwear_events + apparel_events
     total_millions = total_events / 1000000
