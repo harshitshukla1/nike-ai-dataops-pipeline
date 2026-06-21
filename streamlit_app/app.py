@@ -278,6 +278,57 @@ def exec_sql(sql, params=None):
             cur.execute(sql, params or ())
         conn.commit()
 
+def log_finops_for_simulation(event_type, prediction):
+    file_size_mb = random.choice([35, 48, 62, 80, 120])
+    cleaned_mb = file_size_mb if prediction["prediction"] == "SAFE" else round(file_size_mb * 0.35, 2)
+    estimated_saving = round((cleaned_mb / 1024) * 0.023, 6)
+
+    with get_db_connection() as conn:
+        with conn.cursor() as cur:
+            # Simulated object storage requests
+            for operation, count in [
+                ("PUT", 1),
+                ("GET", random.randint(2, 6)),
+                ("DELETE", 1 if prediction["prediction"] == "SAFE" else 0),
+                ("AI_CALL", 1),
+                ("TELEGRAM", 1 if prediction["prediction"] == "BREACH" else 0),
+            ]:
+                cur.execute("""
+                    INSERT INTO finops.system_metrics_log (
+                        service_name,
+                        operation_name,
+                        request_count,
+                        bytes_processed,
+                        estimated_cost_usd,
+                        free_tier_limit
+                    ) VALUES (%s, %s, %s, %s, %s, %s);
+                """, (
+                    "HOSTED_SIMULATION",
+                    operation,
+                    count,
+                    int(file_size_mb * 1024 * 1024),
+                    estimated_saving if operation == "DELETE" else 0,
+                    20000 if operation == "GET" else 2000
+                ))
+
+            cur.execute("""
+                INSERT INTO finops.cost_savings_log (
+                    dag_run_id,
+                    file_path,
+                    file_size_mb,
+                    deleted_successfully,
+                    estimated_storage_cost_saved_usd
+                ) VALUES (%s, %s, %s, %s, %s);
+            """, (
+                "hosted_streamlit_simulation",
+                f"simulated://nike/events/{event_type.lower()}_raw.jsonl",
+                cleaned_mb,
+                prediction["prediction"] == "SAFE",
+                estimated_saving,
+            ))
+
+        conn.commit()
+
 def get_count(table):
     return int(query_df(f"SELECT COUNT(*) AS c FROM {table}")["c"][0])
 
@@ -296,6 +347,8 @@ def run_simulation():
             f"🚨 Nike AI DataOps Hosted Alert\\nPrediction: {pred['prediction']}\\n"
             f"Runtime: {pred['predicted_runtime_min']} min\\nAction: {pred['remediation_action']}\\nReason: {pred['reason']}"
         )
+
+    log_finops_for_simulation(event_type, pred)
     return event_type, pred
 
 page = st.sidebar.radio(
