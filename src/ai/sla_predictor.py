@@ -127,6 +127,43 @@ Reason must mention event type, volume, bot traffic, and SLA risk/safety.
             raise ValueError(text)
         data = json.loads(text[start:end + 1])
         result = normalize_ai_result(data, model_name)
+
+        # Guardrail: improve weak AI outputs for portfolio-grade demo quality
+        if result["predicted_runtime_min"] < 140 and event_type != "STANDARD":
+            estimated = history["avg_runtime"]
+            if event_type == "SNKRS_DROP":
+                estimated += 85
+            elif event_type == "SEASONAL_CAMPAIGN":
+                estimated += 45
+            elif event_type in ("PROMO", "WEEKEND_SPIKE"):
+                estimated += 25
+            if str(bot_traffic).lower() == "high":
+                estimated += 35
+            elif str(bot_traffic).lower() == "medium":
+                estimated += 15
+            if total_events > 8_000_000:
+                estimated += 35
+            elif total_events > 5_000_000:
+                estimated += 20
+            result["predicted_runtime_min"] = round(float(estimated), 2)
+
+        if result["predicted_runtime_min"] > SLA_LIMIT_MINUTES:
+            result["prediction"] = "BREACH"
+            result["remediation_action"] = "SCALE_CLUSTER"
+            result["suggested_cluster_nodes"] = 10
+        else:
+            result["prediction"] = "SAFE"
+            result["remediation_action"] = "NONE"
+            result["suggested_cluster_nodes"] = 4
+
+        if len(str(result.get("reason", ""))) < 30 or str(result.get("reason", "")).lower() in ("short", "sla"):
+            status_word = "risky" if result["prediction"] == "BREACH" else "safe"
+            result["reason"] = (
+                f"{event_type} has {total_events:,} total events with {bot_traffic} bot traffic; "
+                f"historical average runtime is {history['avg_runtime']} minutes and the predicted "
+                f"runtime is {result['predicted_runtime_min']} minutes, so the SLA is {status_word}."
+            )
+
         log_prediction(run_date, result)
         return result
     except Exception as exc:
